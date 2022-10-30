@@ -26,6 +26,11 @@ io.on("connection", (socket) => {
     }
 
     socket.on("disconnect", () => {
+      if (roomPresentor[meetingCode] == me) {
+        socket.to(meetingCode).emit("screen-sharing-ended");
+        delete roomPresentor[meetingCode];
+      }
+
       socket.to(meetingCode).emit("partner-left", me);
     });
 
